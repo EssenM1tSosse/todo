@@ -14,11 +14,11 @@ pip install uuid
 ```
 pip install flask-jwt-extended
 ```
-- SQLite3-Bibliotheken:
+- SQLite3:
 ```
 pip install sqlite3
 ```
-- Flask CORS (zum Testen des Servers in lokane Umgebungen)
+- Flask CORS (zum Testen des Servers in lokalen Umgebungen):
 ```
 pip install flask-cors
 ```

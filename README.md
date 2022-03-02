@@ -1,5 +1,5 @@
 # REST-API einer Todo-Listen Verwaltung
-# H2 Vorraussetzungen:
+# Vorraussetzungen:
 - Python (3.9.x) 
 # benötigte Bibliotheken:
 - Flask: 

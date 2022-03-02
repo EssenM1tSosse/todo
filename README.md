@@ -1,7 +1,7 @@
-# H1 REST-API einer Todo-Listen Verwaltung
+#H1 REST-API einer Todo-Listen Verwaltung
 # H2 Vorraussetzungen:
 - Python (3.9.x) 
-# H3 benötigte Bibliotheken:
+#H2 benötigte Bibliotheken:
 - Flask: 
 > blockquote pip install flask
 

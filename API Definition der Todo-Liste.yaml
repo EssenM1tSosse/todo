@@ -1,0 +1,405 @@
+openapi: 3.0.0
+info:
+  version: '1'
+  title: Todo-Listen Verwaltung
+  description: Dies ist das API-Modell zur Verwaltung von Todo-Listen
+servers:
+  - description: Unter der hier angegebenen URL kann die API angesprochen werden!
+    url: http://127.0.0.1:5000
+paths:
+  /list/:
+    post:
+      summary: Fügt eine neue Todo-Liste hinzu.
+      tags:
+        - List
+      requestBody:
+        $ref: '#/components/requestBodies/Liste_Erstellen'
+      responses:
+        '200':
+          description: Die Liste wurde erstellt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Liste'
+        '500':
+          description: Fehler beim Erstellen der Liste.
+      security:
+        - bearerAuth: []
+    get:
+      summary: Liefert alle Listen eines angemeldeten Benutzers zurück.
+      tags:
+        - List
+      responses:
+        '200':
+          description: Alle Listen eines angemeldeten Benutzers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Listen'
+        '404':
+          description: Es konnten keine Listen gefunden werden.
+      security:
+        - bearerAuth: []
+  /list/{list_id}:
+    parameters:
+      - $ref: '#/components/parameters/list_id'
+    get:
+      summary: Liefert alle Einträge einer Todo-Liste zurück.
+      tags:
+        - List
+      responses:
+        '200':
+          description: Alle Einträge einer bestimmten Liste
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Eintraege'
+        '404':
+          description: Die Liste konnte nicht gefunden werden.
+      security:
+        - bearerAuth: []
+    post:
+      summary: Aktualisiert eine bestehende Todo-Liste.
+      tags:
+        - List
+      requestBody:
+        $ref: '#/components/requestBodies/Liste_Aktualisieren'
+      responses:
+        '200':
+          description: Der Listenname wurde aktualisiert.
+        '500':
+          description: Fehler beim Aktualisieren der Listenbezeichnung.
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Löscht eine komplette Todo-Liste mit allen Einträgen.
+      tags:
+        - List
+      responses:
+        '200':
+          description: Die Liste wurde gelöscht.
+        '404':
+          description: Die Liste konnte nicht gefunden werden.
+      security:
+        - bearerAuth: []
+  /list/{list_id}/entry/:
+    parameters:
+      - $ref: '#/components/parameters/list_id'
+    post:
+      summary: Fügt einen Eintrag zu einer bestehenden Todo-Liste hinzu.
+      tags:
+        - List
+      requestBody:
+        $ref: '#/components/requestBodies/Eintrag_Erstellen'
+      responses:
+        '200':
+          description: Der Eintrag wurde erstellt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Eintrag'
+        '500':
+          description: Fehler beim Erstellen des Listeneintrags.
+      security:
+        - bearerAuth: []
+  /list/{list_id}/entry/{entry_id}:
+    parameters:
+      - $ref: '#/components/parameters/list_id'
+      - $ref: '#/components/parameters/entry_id'
+    post:
+      summary: Aktualisiert einen bestehenden Eintrag.
+      tags:
+        - List
+      requestBody:
+        $ref: '#/components/requestBodies/Eintrag_Aktualisieren'
+      responses:
+        '200':
+          description: Der Eintrag wurde aktualisiert.
+        '500':
+          description: Fehler beim Aktualisieren des Listeneintrags.
+      security:
+        - bearerAuth: []
+    delete:
+      summary: Löscht einen einzelnen Eintrag einer Todo-Liste.
+      tags:
+        - List
+      responses:
+        '200':
+          description: Der Eintrag wurde gelöscht.
+        '404':
+          description: Der Eintrag konnte nicht gefunden werden.
+      security:
+        - bearerAuth: []
+  /user/:
+    post:
+      summary: Fügt einen neuen Benutzer hinzu.
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/User_Erstellen'
+      responses:
+        '200':
+          description: Die Liste wurde erstellt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Fehler beim Erstellen des Benutzers.
+  /user/{user_id}:
+    parameters:
+      - $ref: '#/components/parameters/user_id'
+    delete:
+      summary: Löscht einen Benutzer.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Der Benutzer wurde gelöscht.
+        '404':
+          description: Der Benutzer konnte nicht gefunden werden.
+      security:
+        - bearerAuth: []
+  /users/:
+    get:
+      summary: Liefert eine Liste aller Benutzer zurück.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Alle Benutzer ausgeben.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/Users'
+        '404':
+          description: Die Liste konnte nicht gefunden werden.
+      security:
+        - bearerAuth: []
+  /login/:
+    post:
+      summary: Meldet einen Benutzer an.
+      tags:
+        - User
+      requestBody:
+        $ref: '#/components/requestBodies/User_Anmelden'
+      responses:
+        '200':
+          description: Login erfolgreich.
+        '401':
+          description: Benutzername und/oder Passwort sind falsch.
+  /logout/:
+    get:
+      summary: Meldet einen Benutzer ab.
+      tags:
+        - User
+      responses:
+        '200':
+          description: Erfolgreich ausgeloggt.
+        '401':
+          description: Es war kein Benutzer angemeldet.
+components:
+  parameters:
+    list_id:
+      description: ID einer Liste
+      name: list_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    entry_id:
+      description: ID eines Eintrags
+      name: entry_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    user_id:
+      description: ID eines Benutzers
+      name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  requestBodies:
+    Liste_Erstellen:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListenName'
+    Liste_Aktualisieren:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListenName'
+    Eintrag_Erstellen:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Eintrag'
+    Eintrag_Aktualisieren:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EintragName'
+    User_Erstellen:
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/Login'
+    User_Anmelden:
+      content:
+        application/json:
+          schema: 
+            $ref: '#/components/schemas/Login'
+  responses:
+    Liste:
+      description: Antwort auf eine erfolgreich angelegte Liste.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              list_id:
+                description: ID der neu angelegten Liste
+                type: string
+                format: uuid
+    Listen:
+      description: Liste von ToDo-Listen.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Liste'
+
+    Eintrag:
+      description: Antwort auf einen erfolgreich angelegten Eintrag in einer Liste.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              list_id:
+                description: ID der Liste, welcher der Eintrag zuzuordnen ist.
+                type: string
+                format: uuid
+              entry_id:
+                description: ID des neu erstellten Eintrages.
+                type: string
+                format: uuid
+    Eintraege:
+      description: Liefert eine Todo-Liste mit allen ihr zugeordneten Einträgen.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Eintraege'
+    User:
+      description: Antwort auf einen erfolgreich angelegten Benutzer.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_id:
+                description: ID des Benutzers.
+                type: string
+                format: uuid
+    Users:
+      description: Liefert die Benutzerliste zurück.
+      content:
+        application/json:
+          schema:
+           $ref: '#/components/schemas/Users'
+          
+  schemas:
+    Liste:
+      description: Datenmodell  einer Todo-Liste
+      type: object
+      properties:
+        list_id:
+          description: GUID des Eintrages.
+          type: string
+          format: uuid
+        name:
+          description: Der vom User bestimmte Name der Liste
+          type: string
+          example: Meine erste Todo-Liste
+    ListenName:
+      description: Datenmodell  einer Todo-Liste
+      type: object
+      properties:
+        name:
+          description: Der vom User bestimmte Name der Liste
+          type: string
+          example: Meine erste Todo-Liste
+    Eintrag:
+      description: Datenmodell eines Listeneintrags
+      type: object
+      properties:
+        entry_id:
+          description: GUID des Eintrages.
+          type: string
+          format: uuid
+        eintrag:
+          description: Der Eintrag selbst.
+          type: string
+          example: Mein erster Eintrag in eine Todo-Liste.
+    EintragName:
+      description: Datenmodell eines Listeneintrags
+      type: object
+      properties:
+        eintrag:
+          description: Der Eintrag selbst.
+          type: string
+          example: Mein erster geänderter Eintrag in einer Todo-Liste.
+    Eintraege:
+      description: Datenmodell einer vollständigen Todo-Liste mit all ihren Einträgen
+      type: object
+      properties:
+        list_id:
+          description: ID der Liste, zu welcher die Einträge zugeordnet sind.
+          type: string
+          format: uuid
+        entries:
+          description: Alle Einträge der abgerufenen Liste.
+          type: array
+          items:
+            $ref: '#/components/schemas/Eintrag'
+    User:
+      description: Datenmodell eines Benutzers
+      type: object
+      properties:
+        user_id:
+          description: ID des Benutzers
+          type: string
+          format: uuid
+        name:
+          description: Name des Benutzers
+          type: string
+          example: "alldaypartyboi"
+    Users:
+      description: Liste aller Benutzer
+      type: array
+      items:
+            $ref: '#/components/schemas/User'
+    Login:
+      description: Datenmodell einer Benutzeranmeldung
+      type: object
+      properties:
+        name:
+          description: Name des Benutzers
+          type: string
+          example: "alldaypartyboi"
+        password:
+          description: Passwort des Benutzers
+          type: string
+          example: "schwachespasswort"
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+      bearerFormat: JWT

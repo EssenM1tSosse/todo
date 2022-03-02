@@ -1,21 +1,28 @@
 # REST-API einer Todo-Listen Verwaltung
-# Vorraussetzungen:
+## Vorraussetzungen:
 - Python (3.9.x) 
-# benötigte Bibliotheken:
+## benötigte Bibliotheken:
 - Flask: 
-> blockquote pip install flask
-
+```
+pip install flask
+```
 - UUID:
-> blockquote pip install uuid
-
+```
+pip install uuid
+```
 - JWT-Extensions:
-> blockquote pip install flask-jwt-extended
-
+```
+pip install flask-jwt-extended
+```
 - SQLite3-Bibliotheken:
-> blockquote  pip install sqlite3
-
+```
+pip install sqlite3
+```
 - Flask CORS (zum Testen des Servers in lokane Umgebungen)
-> blockquote pip install flask-cors
-
+```
+pip install flask-cors
+```
 - termcolor:
-> blockquote pip install termcolor
+```
+pip install termcolor
+```
